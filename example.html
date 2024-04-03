@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @keyframes slide-fade-down {
+        0% {
+          transform: translateY(800%);
+          opacity: 0;
+        }
+        2% {
+          opacity: 0;
+        }
+        4% {
+          opacity: 0;
+        }
+        6% {
+          opacity: 0;
+        }
+        8% {
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        20% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+        30% {
+          transform: translateY(100%);
+          opacity: 1;
+        }
+        40% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(50%);
+          opacity: 1;
+        }
+        60% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+        70% {
+          transform: translateY(20%);
+          opacity: 1;
+        }
+        80% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+        90% {
+          transform: translateY(10%);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+      }
+
+      .parent {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 60px;
+        background-color: #220;
+        display: flex;
+        flex-flow: column;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        flood-opacity: inherits;
+        row-gap: 10px;
+        justify-content: space-around;
+        color: #222;
+      }
+      .left-child {
+        width: 30%;
+      }
+      .middle-child {
+        width: 30%;
+      }
+      .right-child {
+        width: 30%;
+      }
+      .right-child ul {
+        display: inline-block;
+        margin: 10px;
+      }
+      .right-child ul li {
+        list-style: none;
+        display: inline-block;
+        margin: 10px;
+      }
+      .h:hover {
+        transition-duration: 1s;
+        transition-timing-function: ease;
+        transition-delay: 0s;
+        transition-property: all;
+        color: green;
+        animation-name: fadein;
+        animation-duration: 1s;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+      }
+      .q:hover {
+        transition-duration: 2s;
+        transition-timing-function: ease;
+
+        transition-property: all;
+
+        font-weight: bolder;
+      }
+      .parent1 {
+        position: absolute;
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 70px;
+        position: absolute;
+        width: 90%;
+      }
+      .slide {
+        animation-name: zoomOutUp;
+        animation-duration: 5s;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+        color: #222;
+        font-size: smaller;
+      }
+
+      .child1 {
+        width: 50%;
+        font-size: 50px;
+        color: white;
+        font-weight: bold;
+        font-style: italic;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+          'Lucida Sans', Arial, sans-serif;
+      }
+      @keyframes slidein {
+        from {
+          transform: translate(-300px);
+        }
+        to {
+          transform: translate(0px);
+          opacity: 100px;
+        }
+      }
+      @keyframes fadein {
+        from {
+          opacity: 0px;
+        }
+        to {
+          opacity: 100px;
+        }
+      }
+      .child2 {
+        position: relative;
+        width: 50%;
+      }
+      .box1 {
+        position: absolute;
+        right: -50px;
+        top: 5rem;
+        width: 200px;
+        height: 200px;
+
+        animation-name: slide-fade-down;
+        animation-duration: 5s;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+      }
+      .box2 {
+        position: absolute;
+        right: -30px;
+        width: 200px;
+        top: 10rem;
+        height: 200px;
+
+        animation-name: slide-fade-down;
+        animation-duration: 5s;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+      }
+      .box3 {
+        position: absolute;
+        right: -0px;
+        width: 200px;
+        top: 17rem;
+        height: 200px;
+
+        animation-name: slide-fade-down;
+        animation-duration: 5s;
+        animation-timing-function: ease;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+      }
+
+      .box1:hover {
+        border: 2px solid white;
+        z-index: 100;
+      }
+      .box2:hover {
+        border: 2px solid white;
+        z-index: 101;
+      }
+      .box3:hover {
+        border: 2px solid white;
+        z-index: 102;
+      }
+      .overlay {
+        position: absolute;
+        width: 90%;
+        height: 90%;
+      }
+      .hi {
+        animation-name: slide-fade-down;
+        animation-duration: 9s;
+        animation-iteration-count: 1;
+        animation-timing-function: ease;
+        text-align: center;
+        font-size: larger;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      @keyframes zoomOutUp {
+        0% {
+          transform: scale(1, 1);
+        }
+        50% {
+          transform: scale(1.5, 1.5);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="first">
+      <h1 class="hi">welcome</h1>
+      <!--
+  <div class="parent">
+        <div class="left-child">
+          <h1 class="q">TTM</h1>
+        </div>
+        <div class="middle-child"></div>
+        <div class="right-child">
+          <ul>
+            <li class="h">Home</li>
+            <li class="h">Home</li>
+            <li class="h">Home</li>
+            <li class="h">Home</li>
+            <li class="h">Home</li>
+          </ul>
+        </div>
+      </div>
+-->
+
+      <div>
+        <div class="parent1">
+          <div class="child1">
+            <h1 class="slide">WELCOME TO TTM COMAPANIES</h1>
+          </div>
+          <div class="child2">
+            <div class="box1">
+              <img src="img/Snapchat-1225309645.jpg" />
+            </div>
+            <div class="box2">
+              <img src="img/Snapchat-1251466370.jpg" />
+            </div>
+            <div class="box3">
+              <img src="img/Snapchat-1493834208.jpg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  </body>
+</html>
+<script>
+  const box1 = document.querySelector('.box1');
+  const box2 = document.querySelector('.box2');
+  const box3 = document.querySelector('.box3');
+  const overlay = document.querySelector('.overlay');
+
+  box1.addEventListener('click', function () {
+    box2.style.opacity = 0;
+    box3.style.opacity = 0;
+    body.style.opacity = 10;
+  });
+  overlay.addEventListener('click', function () {
+    console.log('hi');
+  });
+</script>
