@@ -82,7 +82,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 // Functions
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
   const calcPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
   const dayspassed = calcPassed(new Date(), date);
@@ -92,11 +92,18 @@ const formatMovementDate = function (date) {
   if (dayspassed === 1) return 'Yesterday';
   if (dayspassed <= 1) return `${dayspassed} days ago`;
   else {
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const year = date.getFullYear();
-    return `${day}/ ${month}/${year}`;
+    //const day = `${date.getDate()}`.padStart(2, 0);
+    //const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    //const year = date.getFullYear();
+    return Intl.DateTimeFormat(locale).format(date);
   }
+};
+
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
 };
 
 const displayMovements = function (acc, sort = false) {
@@ -106,9 +113,9 @@ const displayMovements = function (acc, sort = false) {
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
-
     const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, acc.locale);
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
 
     const html = `
       <div class="movements__row">
@@ -116,7 +123,7 @@ const displayMovements = function (acc, sort = false) {
       i + 1
     } ${type}</div>
       <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${formattedMov}</div>
       </div>
     `;
 
@@ -126,19 +133,20 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -148,7 +156,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
 };
 
 const createUsernames = function (accs) {
@@ -182,15 +190,32 @@ let currentAccount;
 currentAccount = account1;
 updateUI(currentAccount);
 containerApp.style.opacity = 100;
-
+//Experimenting API
 const now = new Date();
 
-const day = `${now.getDay()}`.padStart(2, 0);
-const month = now.getMonth();
-const year = now.getFullYear();
-const hour = now.getHours();
-const min = now.getMinutes();
-labelDate.textContent = `${day}/${month}/${year},${hour}: ${min}`;
+//for formatting dates
+//currenices and dates are reoresnted ina completely diffrent way using the internalixation api
+// it formats dates automaticaly
+//intl is the name space for the internalization api
+// we pass  in a local string which is usually the language- the country
+// and we call .format
+// to get this different codes
+// iso language Code Table.. google this to find your local string(en-us)
+// we can give another argument to this api.. we can give an objects ..
+//assuming we want to include hour,minute,day,month,year,weekday
+//for example
+
+// the numeric gives the value in numeric form while the long.. give the alphabetic value
+//short or narrow or 2-digit
+
+//const now = new Date();
+
+//const day = `${now.getDay()}`.padStart(2, 0);
+//const month = now.getMonth();
+//const year = now.getFullYear();
+//const hour = now.getHours();
+//const min = now.getMinutes();
+//labelDate.textContent = `${day}/${month}/${year},${hour}: ${min}`;
 
 //day/month/year
 
@@ -209,6 +234,21 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+
+    //Create current date and time
+    const maxwelltime = {
+      hours: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long',
+    };
+
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      maxwelltime
+    ).format(now);
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
