@@ -180,12 +180,40 @@ const updateUI = function (acc) {
   // Display summary
   calcDisplaySummary(acc);
 };
+const startLogOutTimer = function () {
+  // Set time to 5 minutes
+  let time = 120;
+
+  //Call the timer every second
+
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    // in each cell, print the remaining time to UI
+    labelTimer.textContent = `${min} : ${sec}`;
+
+    //DECREAE IS
+    time--;
+    if (time === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+      document.write('you have been logged out');
+    }
+  };
+
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  // WHEN 0 seconds, stop timer and log out user
+  return timer;
+};
 
 /// creating dates
 
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
 //FAKE ALWAYS LOGGED IN
 currentAccount = account1;
 updateUI(currentAccount);
@@ -254,6 +282,8 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    startLogOutTimer();
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -286,6 +316,8 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -296,15 +328,17 @@ btnLoan.addEventListener('click', function (e) {
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      currentAccount.movements.push(amount);
 
-    //add loan Date
-    currentAccount.movementsDates.push(new Date());
+      //add loan Date
+      currentAccount.movementsDates.push(new Date());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 1500);
+    inputLoanAmount.value = '';
   }
-  inputLoanAmount.value = '';
 });
 
 btnClose.addEventListener('click', function (e) {
@@ -371,7 +405,8 @@ labelBalance.addEventListener('click', function () {
     if (i % 3 === 0) row.style.backgroundColor = 'blue';
   });
 });
-//BIG INT
+//BIG INT?
+/*
 console.log(2 ** 53 - 1);
 console.log(Number.MAX_SAFE_INTEGER);
 console.log(2 ** 53 + 1);
@@ -409,3 +444,4 @@ const calcPassed = (date1, date2) =>
   (Math.abs(date1 - date2) / 1000) * 60 * 60 * 24;
 const days1 = calcPassed(new Date(2037, 3, 14), new Date(2037, 3, 14));
 console.log(days1);
+*/
